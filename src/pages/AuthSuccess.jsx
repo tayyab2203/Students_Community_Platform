@@ -7,6 +7,7 @@ const AuthSuccess = () => {
   const { setUser } = useAppContext(); // get setUser function
 
   useEffect(() => {
+    console.log("✅ AuthSuccess loaded");
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
     const email = params.get("email"); // get email from URL
@@ -39,3 +40,4 @@ const AuthSuccess = () => {
 };
 
 export default AuthSuccess;
+
