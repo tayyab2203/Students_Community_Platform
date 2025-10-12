@@ -20,7 +20,9 @@ const Navbar = () => {
   //   console.log("Google login clicked");
   // };
   const handleGoogleLogin = () => {
-  window.location.href = "http://localhost:8000/auth/google";
+  // window.location.href = "http://localhost:8000/auth/google";
+    // window.location.href = "http://localhost:8000/auth/google";
+    window.location.href = "https://studentscommunity.revivercmsolutions.com/auth/google";
 };
 
 
@@ -252,5 +254,6 @@ const Navbar = () => {
     </>
   );
 };
+
 
 export default Navbar;
