@@ -30,7 +30,7 @@ const AppRoutes = () => {
       <Route path="/Skills" element={<Skills />} />
       <Route path="/AdminBlogs" element={<AdminBlogs />} />
       {/* <Route path="/auth/success" element={<AuthSuccess />} /> */}
-      <Route path="/auth/success/*" element={<AuthSuccess />} />
+      <Route path="/auth/success/" element={<AuthSuccess />} />
       {/* <Route path="/verify-otp" element={<VerifyOtp />} /> ADD THIS */}
         // inside Routes
       <Route path="/home" element={<HomeWrapper />} />
@@ -39,5 +39,6 @@ const AppRoutes = () => {
 
   );
 };
+
 
 export default AppRoutes;
