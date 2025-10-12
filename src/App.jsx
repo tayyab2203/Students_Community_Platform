@@ -144,8 +144,7 @@ const AppProvider = ({ children }) => {
   //   alert("Google login simulated!");
   // };
   const handleGoogleLogin = () => {
-   // window.location.href = "http://localhost:8000/auth/google";
-    window.location.href = "https://studentscommunity.revivercmsolutions.com/auth/google";
+    window.location.href = "http://localhost:8000/auth/google";
   };
 
   // ---------- NEW: Load token on app start ----------
