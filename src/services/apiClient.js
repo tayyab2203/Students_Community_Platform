@@ -33,12 +33,35 @@
 // export default apiClient;
 
 
+// import axios from 'axios';
+
+// const apiClient = axios.create({
+//   // baseURL: 'http://127.0.0.1:8000/api',
+//   baseURL: 'https://studentscommunity.revivercmsolutions.com/api',
+// });
+
+// export default apiClient;
+
 import axios from 'axios';
 
 const apiClient = axios.create({
-  // baseURL: 'http://127.0.0.1:8000/api',
-  baseURL: 'https://studentscommunity.revivercmsolutions.com/api',
+  baseURL: 'https://studentscommunity.revivercmsolutions.com/api',  // Prod
+  timeout: 10000,  // 10s timeout for slow queries
+  withCredentials: true,  // For Sanctum cookies/CSRF if auth added
 });
 
-export default apiClient;
+// Optional: Global error handler
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 404) {
+      console.error('Endpoint not found—check backend routes');
+    } else if (error.code === 'ERR_NETWORK') {
+      console.error('Server unreachable—check CORS/server status');
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default apiClient;
 
