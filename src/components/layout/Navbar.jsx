@@ -47,18 +47,33 @@ const Navbar = () => {
   //   navigate(path);
   //   setIsMobileMenuOpen(false);
   // };
+//   const handleNavigation = (path) => {
+//   setHasNavigated(true);
+
+//   // Agar path http se start ho raha hai, Laravel Blade page hai
+//   if (path.startsWith("http")) {
+//     window.location.href = path;
+//   } else {
+//     navigate(path);
+//   }
+
+//   setIsMobileMenuOpen(false);
+// };
+
   const handleNavigation = (path) => {
   setHasNavigated(true);
 
-  // Agar path http se start ho raha hai, Laravel Blade page hai
   if (path.startsWith("http")) {
-    window.location.href = path;
+    // ✅ Works properly on both desktop and mobile
+    window.open(path, "_self");
   } else {
     navigate(path);
   }
 
-  setIsMobileMenuOpen(false);
+  // ✅ Delay closing menu slightly to avoid redirect interruption
+  setTimeout(() => setIsMobileMenuOpen(false), 300);
 };
+
 
 
   const handleLogoClick = () => {
@@ -227,7 +242,8 @@ const Navbar = () => {
 
             {/* ✅ Mobile Sidebar / Menu */}
             {isMobileMenuOpen && (
-              <div className="lg:hidden px-6 pb-5 animate-fadeIn">
+              //<div className="lg:hidden px-6 pb-5 animate-fadeIn">
+            <div className="lg:hidden px-6 pb-5 animate-fadeIn relative z-[999] pointer-events-auto">
                 <div className="flex flex-col space-y-2 mt-3">
                   {navItems.map((item) => (
                     <button
@@ -280,4 +296,5 @@ export default Navbar;
 
 
 // export default Navbar;
+
 
