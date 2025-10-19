@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useAppContext } from "../App";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
 
 const followersData = [
   {

@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Home from "./Home"; // your Home.jsx
+import About from "./About";
 
 const HomeWrapper = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const HomeWrapper = () => {
   }, [location, navigate]);
 
   return <Home />;
+  return <About />;
 };
 
 export default HomeWrapper;
