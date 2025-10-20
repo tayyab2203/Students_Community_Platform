@@ -1,3 +1,5 @@
+// this is original code and working code
+
 import axios from 'axios';
 
 const apiClient = axios.create({
@@ -41,6 +43,7 @@ const apiClient = axios.create({
 });
 
 export default apiClient;
+
 
 
 
