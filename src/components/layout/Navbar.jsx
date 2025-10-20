@@ -77,7 +77,7 @@ const Navbar = () => {
   return (
     <>
       {/* Background Particles (unchanged) */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      {/* <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -top-48 -left-48 animate-pulse"></div>
         <div
           className="absolute w-96 h-96 bg-blue-600/20 rounded-full blur-3xl -top-48 -right-48 animate-pulse"
@@ -87,7 +87,20 @@ const Navbar = () => {
           className="absolute w-64 h-64 bg-blue-400/10 rounded-full blur-2xl top-1/2 left-1/4 animate-pulse"
           style={{ animationDelay: "2s" }}
         ></div>
-      </div>
+      </div> */}
+      {/* Background Particles (fixed layer behind everything) */}
+<div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+  <div className="absolute w-96 h-96 bg-blue-500/20 rounded-full blur-3xl -top-48 -left-48 animate-pulse"></div>
+  <div
+    className="absolute w-96 h-96 bg-blue-600/20 rounded-full blur-3xl -top-48 -right-48 animate-pulse"
+    style={{ animationDelay: "1s" }}
+  ></div>
+  <div
+    className="absolute w-64 h-64 bg-blue-400/10 rounded-full blur-2xl top-1/2 left-1/4 animate-pulse"
+    style={{ animationDelay: "2s" }}
+  ></div>
+</div>
+
 
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "py-3" : "py-6"
