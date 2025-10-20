@@ -111,7 +111,8 @@ const Navbar = () => {
             className={`relative backdrop-blur-xl ${scrolled ? "bg-blue-50/30" : "bg-blue-100/20"
               } border border-blue-200/30 rounded-2xl shadow-2xl transition-all duration-500`}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-blue-100/5 to-blue-600/10 rounded-2xl"></div>
+            {/* <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-blue-100/5 to-blue-600/10 rounded-2xl"></div> */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-blue-100/5 to-blue-600/10 rounded-2xl pointer-events-none"></div>
 
             <div className="relative px-6 py-3 flex items-center justify-between">
               {/* Logo Section */}
