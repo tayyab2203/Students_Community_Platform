@@ -32,7 +32,7 @@ const Navbar = () => {
   const navItems = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
-  { name: "Register", path: "http://localhost:8000/register-student" }, // 🔹 Laravel Blade page
+  { name: "Register", path: "https://studentscommunity.revivercmsolutions.com/register-student" }, // 🔹 Laravel Blade page
 ];
 
 
