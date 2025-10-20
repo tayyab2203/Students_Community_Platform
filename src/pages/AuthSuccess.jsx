@@ -25,13 +25,10 @@ const AuthSuccess = () => {
       });
 
       // Delay for smooth UX
-      // agr new code na chala to wapis ye wala krna ha . Mn 20 october ko raat 10:55 py ye code modify kr raha hoon
-      // setTimeout(() => {
-      //   navigate("/", { replace: true });
-      // }, 5000);
       setTimeout(() => {
-  window.location.href = `https://studentscommunity.revivercmsolutions.com/complete-profile?token=${token}`;
-}, 3000);
+        navigate("/", { replace: true });
+      }, 5000);
+      
     } else {
       navigate("/login", { replace: true });
     }
