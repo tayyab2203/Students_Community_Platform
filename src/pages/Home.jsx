@@ -166,7 +166,7 @@ const HeroSection = () => {
     <div className="bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 text-white py-12 sm:py-16 lg:py-20 px-4 sm:px-6">
       <div className="max-w-5xl mx-auto text-center">
         <h1 className="text-3xl mt-10 sm:mt-9 sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 animate-fade-in">
-          Connect with CS Students at BZU
+          Join thousands of students connecting across universities.
         </h1>
         <p className="text-base sm:text-lg lg:text-xl text-blue-200 mb-6 sm:mb-8">
           Find collaborators, build teams, share skills
