@@ -1,227 +1,198 @@
-// import React from "react";
-// import { useParams, Link, useNavigate } from "react-router-dom";
-// import { User, MessageSquare, Mail } from "lucide-react";
-// import { useAppContext } from "../App";
-// import Navbar from "../components/layout/Navbar";
-// import Footer from "../components/layout/Footer";
-
-// const SkillBadge = ({ skill }) => (
-//   <span className="px-4 py-2 bg-blue-50 border border-blue-100 text-blue-700 rounded-lg text-sm font-medium shadow-sm hover:shadow-md hover:bg-blue-100 transition">
-//     {skill}
-//   </span>
-// );
-
-// const ProfilePage = () => {
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-//   const { students } = useAppContext();
-//   const student = students.find((s) => s.id === parseInt(id));
-
-//   if (!student)
-//     return (
-//       <div className="min-h-screen flex flex-col">
-//         <Navbar />
-//         <div className="flex-1 flex items-center justify-center text-gray-600 text-lg">
-//           Profile not found 😢
-//         </div>
-//         <Footer />
-//       </div>
-//     );
-
-//   const handleFollowClick = () => {
-//     navigate(`/profile/${student.id}/followers`);
-//   };
-
-//   return (
-//     <div className="min-h-screen flex flex-col bg-gray-50">
-//       <Navbar />
-      
-//       <div className="flex-1 py-24  px-6">
-//         <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-md border border-gray-100 p-8">
-//           {/* Header */}
-//           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 border-b pb-6">
-//             {/* Profile Image / Initial */}
-//             <div className="w-24 h-24 bg-blue-600 text-white rounded-full flex items-center justify-center text-3xl font-bold">
-//               {student.name.charAt(0)}
-//             </div>
-
-//             {/* Info */}
-//             <div className="text-center md:text-left">
-//               <h2 className="text-2xl font-bold text-gray-900">{student.name}</h2>
-//               <p className="text-gray-500 mt-1">{student.semester}</p>
-
-//               <div className="flex flex-wrap justify-center md:justify-start gap-3 mt-4">
-//                 <button 
-//                   onClick={handleFollowClick}
-//                   className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-//                 >
-//                   <User size={16} /> Followers
-//                 </button>
-//                 <button className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">
-//                   <MessageSquare size={16} /> Message
-//                 </button>
-//                 <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
-//                   <Mail size={16} /> Contact
-//                 </button>
-//               </div>
-
-//               {/* Followers / Following Links */}
-//               <div className="flex justify-center md:justify-start gap-6 mt-3 text-gray-500 text-sm">
-//                 <Link
-//                   to={`/profile/${student.id}/followers`}
-//                   className="hover:text-blue-700 transition"
-//                 >
-//                   {student.followers || 0} Followers
-//                 </Link>
-//                 <Link
-//                   to={`/profile/${student.id}/following`}
-//                   className="hover:text-blue-700 transition"
-//                 >
-//                   {student.following || 0} Following
-//                 </Link>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Bio */}
-//           {student.bio && (
-//             <div className="mt-8">
-//               <h3 className="text-lg font-semibold text-gray-800 mb-2">Bio</h3>
-//               <p className="text-gray-600 leading-relaxed">{student.bio}</p>
-//             </div>
-//           )}
-
-//           {/* Skills */}
-//           {student.skills?.length > 0 && (
-//             <div className="mt-10">
-//               <h3 className="text-lg font-semibold text-gray-800 mb-3">Skills</h3>
-//               <div className="flex flex-wrap gap-3">
-//                 {student.skills.map((skill, index) => (
-//                   <SkillBadge key={index} skill={skill} />
-//                 ))}
-//               </div>
-//             </div>
-//           )}
-
-//           {/* Projects */}
-//           {student.projects?.length > 0 && (
-//             <div className="mt-12">
-//               <h3 className="text-lg font-semibold text-gray-800 mb-3">Projects</h3>
-//               <div className="grid md:grid-cols-3 gap-6">
-//                 {student.projects.map((project, index) => (
-//                   <div
-//                     key={index}
-//                     className="bg-gray-50 hover:bg-blue-50 border border-gray-100 hover:border-blue-200 transition rounded-xl p-6 shadow-sm hover:shadow-md"
-//                   >
-//                     <h4 className="text-gray-800 font-semibold">
-//                       {project.title || project}
-//                     </h4>
-//                     {project.tech && (
-//                       <p className="text-gray-500 text-sm mt-1">{project.tech}</p>
-//                     )}
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           )}
-
-//           {/* Activity */}
-//           {student.activity?.length > 0 && (
-//             <div className="mt-12">
-//               <h3 className="text-lg font-semibold text-gray-800 mb-3">
-//                 Recent Activity
-//               </h3>
-//               <ul className="space-y-3 text-gray-600 text-sm">
-//                 {student.activity.map((item, index) => (
-//                   <li
-//                     key={index}
-//                     className="bg-gray-50 hover:bg-gray-100 transition rounded-lg px-4 py-2 shadow-sm"
-//                   >
-//                     {item}
-//                   </li>
-//                 ))}
-//               </ul>
-//             </div>
-//           )}
-
-//           {/* Availability */}
-//           <div className="mt-10">
-//             <p
-//               className={`font-medium ${
-//                 student.available ? "text-green-600" : "text-red-500"
-//               }`}
-//             >
-//               {student.available
-//                 ? "✅ Available for collaboration"
-//                 : "❌ Not available for collaboration"}
-//             </p>
-//           </div>
-//         </div>
-//       </div>
-      
-//       <Footer />
-//     </div>
-//   );
-// };
-
-// export default ProfilePage;
-
-
-
-
-
-
-
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import useStudent from '../hooks/useStudent';
-import ProjectCard from '../components/cards/ProjectCard';
-import MessagingModal from '../components/modals/MessagingModal';
-import {Loader} from '../components/ui/Loader';
-import  useAuth  from '../hooks/useAuth';
-import messagingService from '../services/messagingService';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getStudentById } from "../services/studentService";
+import { Loader } from "../components/ui/Loader";
+import { Linkedin, Github, Globe, Mail, Circle } from "lucide-react";
 
 const ProfilePage = () => {
   const { id } = useParams();
-  const { student, isLoading } = useStudent(id);
-  const { user } = useAuth();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [chatRoomId, setChatRoomId] = useState(null);
-  const navigate = useNavigate();
+  const [student, setStudent] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleMessage = async () => {
-    try {
-      const chatRoom = await messagingService.createChatRoom(student.id);
-      setChatRoomId(chatRoom.id);
-      setModalOpen(true);
-    } catch (error) {
-      console.error(error);
-    }
+  useEffect(() => {
+    const fetchStudent = async () => {
+      try {
+        // const res = await getStudentById(id);
+        // setStudent(res.data);
+        const data = await getStudentById(id);
+        data.skills = Array.isArray(data.skills)
+          ? data.skills
+          : data.skills
+            ? JSON.parse(data.skills)
+            : [];
+        data.projects = Array.isArray(data.projects)
+          ? data.projects
+          : data.projects
+            ? JSON.parse(data.projects)
+            : [];
+        setStudent(data);
+
+
+      } catch (error) {
+        console.error("Error loading student:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStudent();
+  }, [id]);
+
+  if (loading) return <Loader />;
+  if (!student)
+    return <div className="text-center py-10 text-gray-600">Student not found.</div>;
+
+  const availabilityColors = {
+    Available: "text-green-600 bg-green-100",
+    Busy: "text-yellow-600 bg-yellow-100",
+    "Not Available": "text-red-600 bg-red-100",
   };
 
-  if (isLoading || !student) return <Loader />;
-
   return (
-    <div className="bg-white min-h-screen p-4">
-      <img src={student.picture} alt={student.name} className="w-32 h-32 rounded-full mx-auto mb-4" />
-      <h2 className="text-2xl font-bold text-[#111827] text-center">{student.name}</h2>
-      <p className="text-[#1F2937] text-center">{student.email}</p>
-      <p className="text-[#1F2937] text-center">{student.category} - Semester {student.semester}</p>
-      <p className="text-[#1F2937] mt-2">{student.bio}</p>
-      <div className="flex justify-center mt-4">
-        <button onClick={handleMessage} className="bg-[#1E3D99] text-white px-4 py-2 rounded mr-2">Message</button>
-        {user.id === student.id && (
-          <button onClick={() => navigate('/edit-profile')} className="bg-[#1E3D99] text-white px-4 py-2 rounded">Edit</button>
-        )}
+    <div className="min-h-screen bg-gradient-to-br from-[#e3eeff] via-[#f6f9ff] to-[#eef3ff] flex flex-col items-center py-10 px-4 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-700 via-indigo-800 to-blue-900 opacity-10 animate-[gradientMove_8s_ease_infinite]" />
+
+      {/* Profile Header */}
+      <div className="w-full max-w-5xl rounded-2xl shadow-lg overflow-hidden relative z-10 backdrop-blur-xl bg-white/80 border border-white/40">
+        <div className="relative h-44 bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-900 animate-[gradientShift_6s_ease_infinite]">
+          <div className="absolute bottom-0 left-6 transform translate-y-1/2">
+            <img
+              src={student.picture || "/assets/images/default.png"}
+              alt={student.name}
+              className="w-32 h-32 rounded-full border-4 border-white object-cover shadow-2xl"
+            />
+          </div>
+        </div>
+
+        <div className="pt-20 px-6 pb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">{student.name}</h1>
+              <p className="text-gray-500 mt-1">
+                🎓 Semester {student.semester} | Department ID: {student.department_id}
+              </p>
+            </div>
+            <span
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium ${availabilityColors[student.availability] || "bg-gray-100 text-gray-600"
+                }`}
+            >
+              <Circle className="w-3 h-3 fill-current" />
+              {student.availability}
+            </span>
+          </div>
+
+          {/* Bio */}
+          <p className="text-gray-700 text-base leading-relaxed mt-4">{student.bio}</p>
+
+          {/* Social Links */}
+          <div className="flex flex-wrap items-center gap-4 mt-6">
+            {student.linkedin && (
+              <a
+                href={student.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 text-blue-700 hover:underline hover:scale-105 transition"
+              >
+                <Linkedin size={20} /> LinkedIn
+              </a>
+            )}
+            {student.github && (
+              <a
+                href={student.github}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 text-gray-800 hover:underline hover:scale-105 transition"
+              >
+                <Github size={20} /> GitHub
+              </a>
+            )}
+            {student.portfolio && (
+              <a
+                href={student.portfolio}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 text-blue-500 hover:underline hover:scale-105 transition"
+              >
+                <Globe size={20} /> Portfolio
+              </a>
+            )}
+          </div>
+        </div>
       </div>
-      <h3 className="text-xl font-bold text-[#111827] mt-6">Projects</h3>
-      <div className="grid grid-cols-1 gap-4 mt-4">
-        {student.projects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
+
+      {/* Skills */}
+      {student.skills?.length > 0 && (
+        <div className="w-full max-w-5xl mt-6 rounded-2xl shadow-md p-6 bg-white/80 backdrop-blur-xl border border-white/40 hover:shadow-xl transition-all">
+          <h2 className="text-xl font-semibold mb-3 text-gray-900">💡 Skills</h2>
+          <div className="flex flex-wrap gap-3">
+            {student.skills.map((skill, i) => (
+              <span
+                key={i}
+                className="px-4 py-2 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 rounded-full text-sm font-medium hover:scale-105 transition-transform"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Projects */}
+      {student.projects?.length > 0 && (
+        <div className="w-full max-w-5xl mt-6 rounded-2xl shadow-md p-6 bg-white/80 backdrop-blur-xl border border-white/40 hover:shadow-xl transition-all">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900">🚀 Projects</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {student.projects.map((p, i) => (
+              <div
+                key={i}
+                className="border border-gray-200 rounded-xl p-4 bg-gradient-to-br from-gray-50 to-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all"
+              >
+                <h3 className="font-semibold text-lg mb-2 text-gray-800">{p.title}</h3>
+                <p className="text-sm text-gray-600 mb-3">{p.description}</p>
+                {p.live_link && (
+                  <a
+                    href={p.live_link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-600 underline text-sm font-medium hover:text-blue-800"
+                  >
+                    View Project →
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Contact */}
+      <div className="w-full max-w-5xl mt-6 text-center">
+        <button className="px-8 py-3 bg-gradient-to-r from-blue-700 to-indigo-800 text-white rounded-full shadow-md hover:shadow-2xl hover:scale-105 transition">
+          <Mail className="inline-block w-5 h-5 mr-2" />
+          Send Message
+        </button>
       </div>
-      <MessagingModal isOpen={modalOpen} onClose={() => setModalOpen(false)} chatRoomId={chatRoomId} />
+
+      {/* Footer */}
+      <p className="mt-10 text-gray-500 text-sm">
+        🔒 Your information is secure and private.
+      </p>
+
+      {/* Animation keyframes */}
+      <style>
+        {`
+          @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          @keyframes gradientMove {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(10px, -10px); }
+            100% { transform: translate(0, 0); }
+          }
+        `}
+      </style>
     </div>
   );
 };

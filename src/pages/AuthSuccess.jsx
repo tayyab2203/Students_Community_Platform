@@ -1,38 +1,72 @@
-
-
-
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppContext } from "../App";
+import apiClient from "../services/apiClient";
 
 const AuthSuccess = () => {
   const navigate = useNavigate();
   const { setUser } = useAppContext();
+  const [searchParams] = useSearchParams();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    const email = params.get("email");
+    const handleAuth = async () => {
+      const token = searchParams.get("token");
+      const email = searchParams.get("email");
 
-    if (token) {
-      localStorage.setItem("auth_token", token);
-      localStorage.setItem("user_email", email);
-
-      setUser({
-        email,
-        name: email.split("@")[0],
-        image: "https://via.placeholder.com/40",
-      });
-
-      // Delay for smooth UX
-      setTimeout(() => {
+      if (!token) {
         navigate("/", { replace: true });
-      }, 5000);
-      
-    } else {
-      navigate("/login", { replace: true });
-    }
-  }, [navigate, setUser]);
+        return;
+      }
+
+      try {
+        // ✅ Store token first
+        localStorage.setItem("auth_token", token);
+        if (email) {
+          localStorage.setItem("user_email", email);
+        }
+
+        // ✅ Fetch complete user data from API
+        const response = await apiClient.get("/user");
+        const userData = response.data;
+
+        // ✅ Store user object
+        localStorage.setItem("user", JSON.stringify(userData));
+
+        // ✅ Update context
+        setUser(userData);
+
+        console.log("✅ Login successful:", userData);
+
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          navigate("/", { replace: true });
+        }, 2000);
+      } catch (error) {
+        console.error("❌ Failed to fetch user:", error);
+        
+        // Fallback: use email if API fails
+        if (email) {
+          const fallbackUser = {
+            id: null,
+            name: email.split("@")[0],
+            email: email,
+            image: "https://via.placeholder.com/40",
+          };
+          localStorage.setItem("user", JSON.stringify(fallbackUser));
+          setUser(fallbackUser);
+        }
+
+        setTimeout(() => {
+          navigate("/", { replace: true });
+        }, 2000);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    handleAuth();
+  }, [navigate, setUser, searchParams]);
 
   return (
     <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#1E3D9D] via-[#132A70] to-[#0C1A4A] text-white text-center overflow-hidden relative">
@@ -73,26 +107,27 @@ const AuthSuccess = () => {
         </div>
 
         <h1 className="text-2xl font-bold mb-2 animate-fade-in">
-          Authenticating...
+          {loading ? "Authenticating..." : "Success! ✅"}
         </h1>
         <p className="text-blue-100 mb-5 animate-fade-in-delayed">
-          Connecting you to CS STUDENTS COMMUNITY — almost there 😎
+          {loading 
+            ? "Connecting you to CS STUDENTS COMMUNITY — almost there 😎"
+            : "Redirecting to home..."}
         </p>
 
         <div className="bg-white/10 px-5 py-3 rounded-lg border border-white/20 text-sm font-mono text-blue-100 text-left transition-all duration-700 hover:bg-white/20">
           <p>&gt; Verifying credentials...</p>
-          <p>&gt; Downloading good vibes ✨</p>
+          <p>&gt; {loading ? "Downloading good vibes ✨" : "Loading your profile ✨"}</p>
           <p>&gt; Preparing awesome STUDENTS COMMUNITY...</p>
         </div>
       </div>
 
       <footer className="z-10 mt-10 text-xs text-blue-200 animate-fade-in-delayed">
-        “Good things take a few seconds ⏳”
+        "Good things take a few seconds ⏳"
       </footer>
 
       <style>
         {`
-          /* Smooth spin */
           .animate-spin-slow {
             animation: spin 3s linear infinite;
           }
@@ -101,7 +136,6 @@ const AuthSuccess = () => {
             to { transform: rotate(360deg); }
           }
 
-          /* Floating particles */
           @keyframes float {
             0% { transform: translateY(0) scale(1); opacity: 0.5; }
             50% { transform: translateY(-50px) scale(1.2); opacity: 0.9; }
@@ -111,7 +145,6 @@ const AuthSuccess = () => {
             animation: float 6s ease-in-out infinite;
           }
 
-          /* Fade-in animations */
           @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -130,4 +163,3 @@ const AuthSuccess = () => {
 };
 
 export default AuthSuccess;
-

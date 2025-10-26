@@ -7,6 +7,9 @@ import Footer from "../components/layout/Footer";
 import SearchFilterBar from "../components/forms/SearchFilterBar";
 import useSearch from "../hooks/useSearch";
 import { getStudents } from '../services/studentService.js';
+// import ChatModal from "../components/Chat/ChatModal";
+import ChatModal from "../components/Chat/ChatModal.jsx";
+import { sendMessage } from '../services/messagingService.js';
 
 // ------------------- Skill Badge Component -------------------
 const SkillBadge = ({ skill, color = "blue" }) => {
@@ -20,11 +23,13 @@ const SkillBadge = ({ skill, color = "blue" }) => {
     teal: "bg-teal-600/90 hover:bg-teal-500",
   };
 
+ 
+
+
   return (
     <span
-      className={`${
-        colors[color] || colors.blue
-      } text-white text-[10px] px-2 py-0.5 rounded-full font-medium transition-all duration-300 hover:scale-105 shadow-sm cursor-default`}
+      className={`${colors[color] || colors.blue
+        } text-white text-[10px] px-2 py-0.5 rounded-full font-medium transition-all duration-300 hover:scale-105 shadow-sm cursor-default`}
     >
       {skill}
     </span>
@@ -59,9 +64,8 @@ const StudentCard = ({ student, blurred = false }) => {
 
   return (
     <div
-      className={`group bg-gradient-to-br from-gray-800 via-gray-850 to-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 ease-out border border-gray-700 hover:border-blue-500/50 ${
-        blurred ? "blur-sm" : ""
-      }`}
+      className={`group bg-gradient-to-br from-gray-800 via-gray-850 to-gray-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-500 ease-out border border-gray-700 hover:border-blue-500/50 ${blurred ? "blur-sm" : ""
+        }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
@@ -75,9 +79,8 @@ const StudentCard = ({ student, blurred = false }) => {
           <img
             src={student.picture || student.image}
             alt={student.name || "Student"}
-            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ${
-              isHovered ? "scale-105" : "scale-100"
-            }`}
+            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ${isHovered ? "scale-105" : "scale-100"
+              }`}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-700">
@@ -87,9 +90,8 @@ const StudentCard = ({ student, blurred = false }) => {
           </div>
         )}
         <div
-          className={`absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent transition-opacity duration-500 ${
-            isHovered ? "opacity-60" : "opacity-40"
-          }`}
+          className={`absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent transition-opacity duration-500 ${isHovered ? "opacity-60" : "opacity-40"
+            }`}
         ></div>
 
         {student.available && (
@@ -140,9 +142,16 @@ const StudentCard = ({ student, blurred = false }) => {
             <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             <span>View</span>
           </button>
-          <button className="bg-gray-700 text-white p-1.5 sm:p-2 rounded-lg hover:bg-blue-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-110">
+          {/* <button className="bg-gray-700 text-white p-1.5 sm:p-2 rounded-lg hover:bg-blue-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-110">
+            <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          </button> */}
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("openChat", { detail: student }))}
+            className="bg-gray-700 text-white p-1.5 sm:p-2 rounded-lg hover:bg-blue-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-110"
+          >
             <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
+
           <button className="bg-gray-700 text-white p-1.5 sm:p-2 rounded-lg hover:bg-green-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-110">
             <UserPlus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
@@ -150,9 +159,8 @@ const StudentCard = ({ student, blurred = false }) => {
       </div>
 
       <div
-        className={`absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-10 transform -skew-x-12 transition-all duration-1000 ${
-          isHovered ? "translate-x-full" : "-translate-x-full"
-        }`}
+        className={`absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-10 transform -skew-x-12 transition-all duration-1000 ${isHovered ? "translate-x-full" : "-translate-x-full"
+          }`}
       ></div>
     </div>
   );
@@ -268,21 +276,34 @@ const FeaturedProfiles = ({ students = [], loading = false }) => {
   );
 };
 
+
 // ------------------- Home Page Component -------------------
 const Home = () => {
   const { results = [], loading: searchLoading, updateSearchQuery, updateCategory } = useSearch();
-  
+
   const [apiStudents, setApiStudents] = useState([]);
   const [apiLoading, setApiLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
 
   useEffect(() => {
-  const saved = localStorage.getItem('newStudent');
-  if(saved){
-    setApiStudents(prev => [JSON.parse(saved), ...prev]); // top pe add
-    localStorage.removeItem('newStudent'); // cleanup
-  }
-}, []);
+    const handleOpenChat = (e) => {
+      setSelectedStudent(e.detail);
+      setIsChatOpen(true);
+    };
+    window.addEventListener("openChat", handleOpenChat);
+    return () => window.removeEventListener("openChat", handleOpenChat);
+  }, []);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('newStudent');
+    if (saved) {
+      setApiStudents(prev => [JSON.parse(saved), ...prev]); // top pe add
+      localStorage.removeItem('newStudent'); // cleanup
+    }
+  }, []);
 
 
   // ✅ Fetch dynamic students from Laravel API
@@ -324,6 +345,15 @@ const Home = () => {
       )}
 
       <FeaturedProfiles students={displayStudents} loading={isLoading} />
+
+      {isChatOpen && selectedStudent && (
+        <ChatModal
+          isOpen={isChatOpen}
+          receiver={selectedStudent}
+          onClose={() => setIsChatOpen(false)}
+        />
+      )}
+
 
       <Footer />
     </>
