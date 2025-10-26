@@ -282,7 +282,9 @@ const NavbarChatModal = ({ isOpen, onClose }) => {
         // });
         const pusher = new Pusher(import.meta.env.VITE_PUSHER_KEY, {
             cluster: import.meta.env.VITE_PUSHER_CLUSTER,
-            authEndpoint: "http://localhost:8000/broadcasting/auth",
+            // authEndpoint: "http://localhost:8000/broadcasting/auth",
+            authEndpoint: "https://studentscommunity.revivercmsolutions.com/broadcasting/auth",
+            
             auth: {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -342,3 +344,4 @@ const NavbarChatModal = ({ isOpen, onClose }) => {
 };
 
 export default NavbarChatModal;
+
